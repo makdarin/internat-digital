@@ -1,0 +1,5 @@
+this is documentation for backend api:
+13.08.2022 - added 3 Apis to server:
+http://95.217.210.206/api/v1/internat/getAllEvents
+http://95.217.210.206/api/v1/internat/getResultByYear/2008
+http://95.217.210.206/api/v1/internat/getResultByWeight/60
