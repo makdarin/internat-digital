@@ -115,9 +115,53 @@ server.get('/getResultByWeight/:id', function (req, res, next) {
     });
 });
 
+//add new customer - to do later
+server.post('/intEvent', bodyParser(), function (req, res, next) {
+    // res.header("Access-Control-Allow-Origin", "*");
+    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+
+    const id = req.params.id;
+    const reqbody = req.body;
+
+    const date_ = Date.now();
+    const date = dateFormat(date_, "yyyy-mm-dd h:MM:ss");
+    // const birthday = dateFormat(reqbody.birthday, "yyyy-mm-dd");
+
+    const insertbody = [reqbody.year, reqbody.name_event, reqbody.country, reqbody.sportsman, reqbody.weight, reqbody.result, date, date];
+    const updatebody = [reqbody.year, reqbody.name_event, reqbody.country, reqbody.sportsman, reqbody.weight, reqbody.result, date, date];
+
+    connection.query("SELECT * FROM international_events WHERE id = ?", [id], function (err, tmpres) {
+        if (err) {
+            console.log("query failed!" + err);
+            res.json({success: false});
+        }
+        if( tmpres.length !== 0 ){
+            connection.query("UPDATE international_events SET year=?, name_event=?, country=?, sportsman=?, weight_kg=?, result=?, updatedAt=? WHERE id=?", updatebody,
+                function(err, r){
+                    if( err ) {
+                        console.log(err);
+                        res.json({success: false});
+                    }
+                    res.json({success: true});
+                })
+        } else {
+            connection.query("INSERT INTO international_events (year, name_event, country, sportsman, weight_kg, result, createdAt, updatedAt) VALUES (?)", [insertbody],
+                function(err, r){
+                    if( err ){
+                        console.log(err);
+                        res.json({success: false});
+                    }
+                    res.json({success: true});
+                })
+        }
+        console.log('Add new international event -> ' + reqbody.name_event + ' ' + reqbody.sportsman );
+    });
+});
+
 
 //delete customer by id - to do later
-server.del('/events/:id', function (req, res, next) {
+server.del('/intEvent/:id', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Content-Type", "application/json; charset=utf-8");
     res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
@@ -127,13 +171,13 @@ server.del('/events/:id', function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
     const id = req.params.id;
-    connection.query("DELETE FROM customers WHERE id = ?", [id], function (err, tmpres) {
+    connection.query("DELETE FROM international_events WHERE id = ?", [id], function (err, tmpres) {
         if (err) {
             console.log(err);
             res.json({success: false});
         }
         res.json({success: true});
-        console.log('Delete customer: ' + id);
+        console.log('Delete data from international events by id: ' + id);
     });
 });
 
