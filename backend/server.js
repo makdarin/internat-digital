@@ -14,7 +14,6 @@ const bcrypt = require('bcrypt')
 
 
 var connection = mysql.createConnection({server: '127.0.0.1:3306', user: 'yuriy', password: 'Test1234!', database: 'internat'});
-//var connection = mysql.createConnection({server: '127.0.0.1:3306', user: 'root', password: 'root', database: 'grundsteuer'});
 
 server.listen(7081, function () {
     console.log('listening at -> %s', server.url);
@@ -181,6 +180,195 @@ server.del('/intEvent/:id', function (req, res, next) {
     });
 });
 
+//get list of allsportsmen
+server.get('/allSportsmen', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    connection.query("SELECT * FROM sportsmen", function (err, tmpres) {
+        if (err) {
+            console.log("query failed!" + req.params + err);
+            return;
+        }
+        var out = [];
+        tmpres.forEach(function (a) {
+            out.push({
+                id: a.id,
+                name: a.name,
+                surname: a.surname,
+                birthday: a.bithday_date,
+                phone: a.phone,
+                changed: a.created,
+                updated: a.updated
+            });
+        });
+        res.json(out);
+        console.log('Get all sportsmen');
+    });
+});
+
+
+//add new sportsman - to do later
+server.post('/sportsman', bodyParser(), function (req, res, next) {
+    // res.header("Access-Control-Allow-Origin", "*");
+    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+
+    const id = req.params.id;
+    const reqbody = req.body;
+
+    const date_ = Date.now();
+    const date = dateFormat(date_, "yyyy-mm-dd h:MM:ss");
+    // const birthday = dateFormat(reqbody.birthday, "yyyy-mm-dd");
+
+    const insertbody = [reqbody.name, reqbody.surname, null, reqbody.phone, date, date];
+    const updatebody = [reqbody.name, reqbody.surname, null, reqbody.phone, date];
+
+    connection.query("SELECT * FROM sportsmen WHERE id = ?", [id], function (err, tmpres) {
+        if (err) {
+            console.log("query failed!" + err);
+            res.json({success: false});
+        }
+        if( tmpres.length !== 0 ){
+            connection.query("UPDATE sportsmen SET name=?, surname=?, bithday_date=?, phone=?, updated=? WHERE id=?", updatebody,
+                function(err, r){
+                    if( err ) {
+                        console.log(err);
+                        res.json({success: false});
+                    }
+                    res.json({success: true});
+                })
+        } else {
+            connection.query("INSERT INTO sportsmen (name, surname, bithday_date, phone, updated, created ) VALUES (?)", [insertbody],
+                function(err, r){
+                    if( err ){
+                        console.log(err);
+                        res.json({success: false});
+                    }
+                    res.json({success: true});
+                })
+        }
+        console.log('Add new sportsman -> ' + reqbody.name + ' ' + reqbody.surname );
+    });
+});
+
+
+//delete sportsman by id - to do later
+server.del('/sportsman/:id', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Content-Type", "application/json; charset=utf-8");
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Acc' +
+        'ess-Control-Request-Method, Access-Control-Request-Headers,X-Access-Token,XKey,A' +
+        'uthorization');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    const id = req.params.id;
+    connection.query("DELETE FROM sportsmen WHERE id = ?", [id], function (err, tmpres) {
+        if (err) {
+            console.log(err);
+            res.json({success: false});
+        }
+        res.json({success: true});
+        console.log('Delete sportsman by id: ' + id);
+    });
+});
+
+
+//get list of allsportsmen
+server.get('/allTrainings', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    connection.query("SELECT * FROM plan", function (err, tmpres) {
+        if (err) {
+            console.log("query failed!" + req.params + err);
+            return;
+        }
+        var out = [];
+        tmpres.forEach(function (a) {
+            out.push({
+                id: a.id,
+                task: a.task,
+                day: a.day,
+                morning: a.morning,
+                evening: a.evenig,
+                description: a.description,
+                changed: a.created,
+                updated: a.updated
+            });
+        });
+        res.json(out);
+        console.log('Get all tasks from plan');
+    });
+});
+
+
+//add new sportsman - to do later
+server.post('/training', bodyParser(), function (req, res, next) {
+    // res.header("Access-Control-Allow-Origin", "*");
+    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+
+    const id = req.params.id;
+    const reqbody = req.body;
+
+    const date_ = Date.now();
+    const date = dateFormat(date_, "yyyy-mm-dd h:MM:ss");
+    // const birthday = dateFormat(reqbody.birthday, "yyyy-mm-dd");
+
+    const insertbody = [reqbody.task, reqbody.day, reqbody.morning, reqbody.evening, reqbody.description, date, date];
+    const updatebody = [reqbody.task, reqbody.day, reqbody.morning, reqbody.evening, reqbody.description, date, reqbody.id];
+
+    connection.query("SELECT * FROM plan WHERE id = ?", [reqbody.id], function (err, tmpres) {
+        if (err) {
+            console.log("query failed!" + err);
+            res.json({success: false});
+        }
+        if( tmpres.length !== 0 ){
+            connection.query("UPDATE plan SET task=?, day=?, morning=?, evenig=?, description=?, updated=? WHERE id=?", updatebody,
+                function(err, r){
+                    if( err ) {
+                        console.log(err);
+                        res.json({success: false});
+                    }
+                    res.json({success: true});
+                })
+        } else {
+            connection.query("INSERT INTO plan (task, day, morning, evenig, description, updated, created ) VALUES (?)", [insertbody],
+                function(err, r){
+                    if( err ){
+                        console.log(err);
+                        res.json({success: false});
+                    }
+                    res.json({success: true});
+                })
+        }
+        console.log('Add new task -> ' + reqbody.task);
+    });
+});
+
+
+//delete sportsman by id - to do later
+server.del('/training/:id', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Content-Type", "application/json; charset=utf-8");
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Acc' +
+        'ess-Control-Request-Method, Access-Control-Request-Headers,X-Access-Token,XKey,A' +
+        'uthorization');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    const id = req.params.id;
+    connection.query("DELETE FROM plan WHERE id = ?", [id], function (err, tmpres) {
+        if (err) {
+            console.log(err);
+            res.json({success: false});
+        }
+        res.json({success: true});
+        console.log('Delete task from plan: ' + id);
+    });
+});
 //add new customer - to do later
 server.post('/customer/:surname', bodyParser(), function (req, res, next) {
     // res.header("Access-Control-Allow-Origin", "*");
