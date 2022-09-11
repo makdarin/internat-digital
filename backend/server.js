@@ -114,21 +114,21 @@ server.get('/getResultByWeight/:id', function (req, res, next) {
     });
 });
 
-//add new customer - to do later
+//add new international event
 server.post('/intEvent', bodyParser(), function (req, res, next) {
     // res.header("Access-Control-Allow-Origin", "*");
     // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
 
-    const id = req.params.id;
+
     const reqbody = req.body;
+    const id = reqbody.id;
 
     const date_ = Date.now();
     const date = dateFormat(date_, "yyyy-mm-dd h:MM:ss");
-    // const birthday = dateFormat(reqbody.birthday, "yyyy-mm-dd");
 
     const insertbody = [reqbody.year, reqbody.name_event, reqbody.country, reqbody.sportsman, reqbody.weight, reqbody.result, date, date];
-    const updatebody = [reqbody.year, reqbody.name_event, reqbody.country, reqbody.sportsman, reqbody.weight, reqbody.result, date, date];
+    const updatebody = [reqbody.year, reqbody.name_event, reqbody.country, reqbody.sportsman, reqbody.weight, reqbody.result, date, id];
 
     connection.query("SELECT * FROM international_events WHERE id = ?", [id], function (err, tmpres) {
         if (err) {
@@ -159,7 +159,7 @@ server.post('/intEvent', bodyParser(), function (req, res, next) {
 });
 
 
-//delete customer by id - to do later
+//delete international eventby id
 server.del('/intEvent/:id', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Content-Type", "application/json; charset=utf-8");
@@ -179,6 +179,101 @@ server.del('/intEvent/:id', function (req, res, next) {
         console.log('Delete data from international events by id: ' + id);
     });
 });
+
+//get list of all local events
+server.get('/localEvents', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    connection.query("SELECT * FROM local_event", function (err, tmpres) {
+        if (err) {
+            console.log("query failed!" + req.params + err);
+            return;
+        }
+        var out = [];
+        tmpres.forEach(function (a) {
+            out.push({
+                id: a.id,
+                year: a.year,
+                event: a.name_event,
+                city: a.city,
+                sportsman: a.sportsman,
+                weight: a.weight_kg,
+                result: a.result,
+                changed: a.createdAt,
+                updated: a.updatedAt
+            });
+        });
+        res.json(out);
+        console.log('Get all local events');
+    });
+});
+
+//add new local event
+server.post('/localEvent', bodyParser(), function (req, res, next) {
+    // res.header("Access-Control-Allow-Origin", "*");
+    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    const reqbody = req.body;
+    const id = reqbody.id;
+
+
+    const date_ = Date.now();
+    const date = dateFormat(date_, "yyyy-mm-dd h:MM:ss");
+
+    const insertbody = [reqbody.year, reqbody.event, reqbody.city, reqbody.sportsman, reqbody.weight, reqbody.result, date, date];
+    const updatebody = [reqbody.year, reqbody.event, reqbody.city, reqbody.sportsman, reqbody.weight, reqbody.result, date, id];
+
+    connection.query("SELECT * FROM local_event WHERE id = ?", [id], function (err, tmpres) {
+        if (err) {
+            console.log("query failed!" + err);
+            res.json({success: false});
+        }
+        if( tmpres.length !== 0 ){
+            connection.query("UPDATE local_event SET year=?, name_event=?, city=?, sportsman=?, weigt_kg=?, result=?, updatedAt=? WHERE id=?", updatebody,
+                function(err, r){
+                    if( err ) {
+                        console.log(err);
+                        res.json({success: false});
+                    }
+                    res.json({success: true});
+                })
+        } else {
+            connection.query("INSERT INTO local_event (year, name_event, city, sportsman, weigt_kg, result, createdAt, updatedAt) VALUES (?)", [insertbody],
+                function(err, r){
+                    if( err ){
+                        console.log(err);
+                        res.json({success: false});
+                    }
+                    res.json({success: true});
+                })
+        }
+        console.log('Add new local event -> ' + reqbody.event + ' ' + reqbody.sportsman);
+    });
+});
+
+
+//delete local event by id
+server.del('/localEvent/:id', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Content-Type", "application/json; charset=utf-8");
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Acc' +
+        'ess-Control-Request-Method, Access-Control-Request-Headers,X-Access-Token,XKey,A' +
+        'uthorization');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    const id = req.params.id;
+    connection.query("DELETE FROM local_event WHERE id = ?", [id], function (err, tmpres) {
+        if (err) {
+            console.log(err);
+            res.json({success: false});
+        }
+        res.json({success: true});
+        console.log('Delete data from local events by id: ' + id);
+    });
+});
+
 
 //get list of allsportsmen
 server.get('/allSportsmen', function (req, res, next) {
@@ -213,16 +308,14 @@ server.post('/sportsman', bodyParser(), function (req, res, next) {
     // res.header("Access-Control-Allow-Origin", "*");
     // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-
-    const id = req.params.id;
     const reqbody = req.body;
+    const id = reqbody.id;
 
     const date_ = Date.now();
     const date = dateFormat(date_, "yyyy-mm-dd h:MM:ss");
-    // const birthday = dateFormat(reqbody.birthday, "yyyy-mm-dd");
 
     const insertbody = [reqbody.name, reqbody.surname, null, reqbody.phone, date, date];
-    const updatebody = [reqbody.name, reqbody.surname, null, reqbody.phone, date];
+    const updatebody = [reqbody.name, reqbody.surname, null, reqbody.phone, date, id];
 
     connection.query("SELECT * FROM sportsmen WHERE id = ?", [id], function (err, tmpres) {
         if (err) {
