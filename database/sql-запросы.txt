@@ -1,3 +1,22 @@
 SELECT * FROM trainers
 SELECT * FROM trainers WHERE id = ?
 UPDATE trainers SET name=?, surname=?, phone=?, category=?, updated=? WHERE id=?
+"INSERT INTO trainers (name, surname, phone, category, updated, created ) VALUES (?)"
+"DELETE FROM trainers WHERE id = ?"
+"SELECT * FROM international_events WHERE year=?"
+"SELECT * FROM international_events"
+"SELECT * FROM international_events WHERE weight_kg=?"
+"SELECT * FROM international_events WHERE id = ?"
+"UPDATE international_events SET year=?, name_event=?, country=?, sportsman=?, weight_kg=?, result=?, updatedAt=? WHERE id=?"
+"INSERT INTO international_events (year, name_event, country, sportsman, weight_kg, result, createdAt, updatedAt) VALUES (?)"
+"DELETE FROM international_events WHERE id = ?"
+"SELECT * FROM local_event"
+"SELECT * FROM local_event WHERE id = ?"
+"UPDATE local_event SET year=?, name_event=?, city=?, sportsman=?, weigt_kg=?, result=?, updatedAt=? WHERE id=?"
+"INSERT INTO local_event (year, name_event, city, sportsman, weigt_kg, result, createdAt, updatedAt) VALUES (?)"
+"DELETE FROM local_event WHERE id = ?"
+"SELECT * FROM sportsmen"
+"SELECT * FROM sportsmen WHERE id = ?"
+"INSERT INTO sportsmen (name, surname, bithday_date, phone, updated, created ) VALUES (?)"
+"UPDATE sportsmen SET name=?, surname=?, bithday_date=?, phone=?, updated=? WHERE id=?"
+"DELETE FROM sportsmen WHERE id = ?"
