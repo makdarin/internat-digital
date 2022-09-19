@@ -1,0 +1,3 @@
+SELECT * FROM trainers
+SELECT * FROM trainers WHERE id = ?
+UPDATE trainers SET name=?, surname=?, phone=?, category=?, updated=? WHERE id=?
