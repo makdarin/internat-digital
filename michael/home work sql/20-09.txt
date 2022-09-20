@@ -1,0 +1,22 @@
+sql-запросы
+1.trainers.
+1.1 SELECT * FROM trainers
+1.2 SELECT * FROM trainers WHERE id = 1
+1.3"INSERT INTO trainers (name, surname, phone, category, updated, created ) VALUES ( "Юрий","Червяков","+380634674629","ЗТУ","2022-09-20","2022-09-20")
+1.4UPDATE trainers SET  phone=1234" WHERE id=3
+1.5 "DELETE FROM trainers WHERE id =3"
+2."SELECT * FROM international_events"
+2.1 "INSERT INTO international_events (year, name_event, country, sportsman, weight_kg, result, createdAt, updatedAt) VALUES ("1990","Test","test","test",45,"test","2022-09-20","2022-09-20")"
+2.3"SELECT * FROM international_events WHERE id = 1"
+2.4"UPDATE international_events SET year=1995, name_event=a, country=a, sportsman=a, weight_kg=40, result=a,  WHERE id=62"
+2.5"DELETE FROM international_events WHERE id = 62"
+3 "SELECT * FROM local_event"
+3.1 "SELECT * FROM local_event WHERE id = 1"
+3.2 "INSERT INTO local_event (year, name_event, city, sportsman, weigt_kg, result, createdAt, updatedAt) VALUES ("1999","s","s","s",45,"s","2022-09-22","2022-09-20")"
+3.4"UPDATE local_event SET year=2000, name_event=a, city=a, sportsman=a, weigt_kg=20, result=a WHERE id=10"
+3.5 "DELETE FROM local_event WHERE id = 10"
+4 "SELECT * FROM sportsmen"
+4.1"SELECT * FROM sportsmen WHERE id = 1"
+4.2 "INSERT INTO sportsmen (name, surname, bithday_date, phone, updated, created ) VALUES ("a","a",NULL,NULL,"2022-09-20","2022-09-20")"
+4.5"UPDATE sportsmen SET name=D, surname=D, bithday_date=1977-11-20, phone=1234,  WHERE id=16"
+4.6 "DELETE FROM sportsmen WHERE id = 16"
