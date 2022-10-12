@@ -1,0 +1,36 @@
+"SELECT * FROM adminusers WHERE email  = ?
+"INSERT INTO adminusers (fullname, email, password, createdAt, updatedAt) VALUES (?)", [[fullname, email, hashpass, _date, _date]],
+"SELECT * FROM adminusers WHERE email  = ?"
+"SELECT * FROM adminusers WHERE email = ?"
+"INSERT INTO customers (mandant, anrede, titel, phone, postfach, hausExt, postcodeAus, country, name, surname, plz, ort, strasse, hausNummer, identifikationsnummer, geburtsdatum, steuerberater, adresseStb, wohnsitzFinanzamt, steuernummer, changed, created) VALUES (?)"
+"UPDATE customers SET mandant=?, anrede=?, titel=?, phone=?, postfach=?, hausExt=?, postcodeAus=?, country=?, plz=?, ort=?, strasse=?, hausNummer=?, identifikationsnummer=?, geburtsdatum=?, steuerberater=?, adresseStb=?, wohnsitzFinanzamt=?, steuernummer=?, name=?, changed=? WHERE surname=?"
+"SELECT * FROM customers WHERE surname = ? AND geburtsdatum = ?"
+"DELETE FROM plan WHERE id = ?"
+"INSERT INTO plan (task, day, morning, evenig, description, updated, created ) VALUES (?)"
+"UPDATE plan SET task=?, day=?, morning=?, evenig=?, description=?, updated=? WHERE id=?"
+"SELECT * FROM plan WHERE id = ?"
+"SELECT * FROM plan",
+"DELETE FROM sportsmen WHERE id = ?"
+"INSERT INTO sportsmen (name, surname, bithday_date, phone, updated, created ) VALUES (?)"
+"UPDATE sportsmen SET name=?, surname=?, bithday_date=?, phone=?, updated=? WHERE id=?"
+"SELECT * FROM sportsmen WHERE id = ?"
+"SELECT * FROM sportsmen",
+"DELETE FROM trainers WHERE id = ?"
+"INSERT INTO trainers (name, surname, phone, category, updated, created ) VALUES (?)",
+("UPDATE trainers SET name=?, surname=?, phone=?, category=?, updated=? WHERE id=?",("SELECT * FROM trainers WHERE id = ?",
+"SELECT * FROM trainers",
+'Delete data from local events by id:
+"DELETE FROM local_event WHERE id = ?",
+("INSERT INTO local_event (year, name_event, city, sportsman, weigt_kg, result, createdAt, updatedAt) VALUES (?)"
+"UPDATE local_event SET year=?, name_event=?, city=?, sportsman=?, weigt_kg=?, result=?, updatedAt=? WHERE id=?",
+"SELECT * FROM local_event WHERE id = ?",
+("SELECT * FROM local_event",
+"DELETE FROM international_events WHERE id = ?"
+("INSERT INTO international_events (year, name_event, country, sportsman, weight_kg, result, createdAt, updatedAt) VALUES (?)", 
+"UPDATE international_events SET year=?, name_event=?, country=?, sportsman=?, weight_kg=?, result=?, updatedAt=? WHERE id=?",
+"SELECT * FROM international_events WHERE id = ?"
+"SELECT * FROM international_events WHERE weight_kg=?"
+"SELECT * FROM international_events WHERE year=?"
+"SELECT * FROM international_events"
+var connection = mysql.createConnection({server: '127.0.0.1:3306', user: 'yuriy', password: 'Test1234!', database: 'internat'});
+var connection = mysql.createConnection({server: '127.0.0.1:3306', user: 'yuriy', password: 'Test1234!', database: 'internat'});
