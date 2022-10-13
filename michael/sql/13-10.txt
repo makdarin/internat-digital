@@ -1,0 +1,92 @@
+//get list of all trainers
+server.get('/trainers', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    connection.query("SELECT * FROM trainers", function (err, tmpres) {
+        if (err) {
+            console.log("query failed!" + req.params + err);
+            return;
+        }
+        var out = [];
+        tmpres.forEach(function (a) {
+            out.push({
+                id: a.id,
+                name: a.name,
+                surname: a.surname,
+                phone: a.phone,
+                category: a.category,
+                changed: a.created,
+                updated: a.updated
+            });
+        });
+        res.json(out);
+        console.log('Get all trainers');
+    });
+});
+
+
+//add new trainer
+server.post('/trainer', bodyParser(), function (req, res, next) {
+    // res.header("Access-Control-Allow-Origin", "*");
+    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    const reqbody = req.body;
+    const id = reqbody.id;
+
+    const date_ = Date.now();
+    const date = dateFormat(date_, "yyyy-mm-dd h:MM:ss");
+
+    const insertbody = [reqbody.name, reqbody.surname, reqbody.phone, reqbody.category, date, date];
+    const updatebody = [reqbody.name, reqbody.surname, reqbody.phone, reqbody.category, date, id];
+
+    connection.query("SELECT * FROM trainers WHERE id = ?", [id], function (err, tmpres) {
+        if (err) {
+            console.log("query failed!" + err);
+            res.json({success: false});
+        }
+        if( tmpres.length !== 0 ){
+            connection.query("UPDATE trainers SET name=?, surname=?, phone=?, category=?, updated=? WHERE id=?", updatebody,
+                function(err, r){
+                    if( err ) {
+                        console.log(err);
+                        res.json({success: false});
+                    }
+                    res.json({success: true});
+                })
+        } else {
+            connection.query("INSERT INTO trainers (name, surname, phone, category, updated, created ) VALUES (?)", [insertbody],
+                function(err, r){
+                    if( err ){
+                        console.log(err);
+                        res.json({success: false});
+                    }
+                    res.json({success: true});
+                })
+        }
+        console.log('Add new trainer -> ' + reqbody.name + ' ' + reqbody.surname);
+    });
+});
+
+
+//delete trainer by id
+server.del('/trainer/:id', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Content-Type", "application/json; charset=utf-8");
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Acc' +
+        'ess-Control-Request-Method, Access-Control-Request-Headers,X-Access-Token,XKey,A' +
+        'uthorization');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    const id = req.params.id;
+    connection.query("DELETE FROM trainers WHERE id = ?", [id], function (err, tmpres) {
+        if (err) {
+            console.log(err);
+            res.json({success: false});
+        }
+        res.json({success: true});
+        console.log('Delete trainer by id: ' + id);
+    });
+});
+
