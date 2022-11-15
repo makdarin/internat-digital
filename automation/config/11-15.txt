@@ -1,0 +1,35 @@
+
+    "internat": {
+        "int_event": {
+                 "year": "2015",
+                 "name_event": "Stekos Fight Night1",
+                 "country": "Germany",
+                 "sportsman": "Makalov Juri",
+                 "weight": "67",
+                 "result": "silver"
+        },
+        "sportsmen": {
+                 "name": "Jens",
+                 "surname": "Makert",
+                 "phone": "+4917686189827"
+        },
+        "local_event": {
+                "year": "2022",
+                "event": "Кобок Виници",
+                "city": "Vinitsya",
+                "sportsman": "Korol Eduard",
+                "weight": "75",
+                "result": "gold"
+        },
+"trainers": {
+"name": "mike",
+"surname" : "mitaky",
+"phone": " +380662605380",
+"category": "honored trainer of Ukraine, national judje"
+}
+    },
+    "api": {
+        "host": "http://95.217.210.206/api/v1/internat",
+        "checkCertificate": false
+    }
+}    
