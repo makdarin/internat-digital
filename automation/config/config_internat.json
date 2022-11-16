@@ -20,6 +20,12 @@
                 "sportsman": "Korol Eduard",
                 "weight": "75",
                 "result": "gold"
+        },
+        "trainers": {
+            "name": "mike",
+            "surname" : "mitaky",
+            "phone": " +380662605380",
+            "category": "honored trainer of Ukraine, national judje"
         }
     },
     "api": {
