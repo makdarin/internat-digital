@@ -325,8 +325,38 @@ it('should be possible to get trainers ', function(cb) {
 
 //===========================================STOP GET REQUESTS=================================================
 
+
 //===========================================START DELETE REQUESTS=================================================
- it('should be possible to delete local event: ', 
+it('should be possible to delete international event:',
+     function(cb) {
+        this.timeout(6000);
+        request.del("http://95.217.210.206/api/v1/internat/intEvent/34", {
+            json: true,
+            strictSSL: config.api.checkCertificate,
+            headers: {
+                'X-CSession': token
+
+            }
+        }, function(err,res,body) {
+            try {
+                console.log(body);
+                var testCase= "should be possible to delete inernational event: ";
+                res.statusCode.should.equal(200);
+                switch (res.statusCode == 200) {
+                    case true:
+                        log.info("Passed: " + testCase);
+                        break
+                }
+            }catch (err) {
+                log.err("Failded: " + testCase + ' ->' + err);
+                should.throw(err);
+            }
+            cb();
+        });
+     });
+
+    
+it('should be possible to delete local event: ', 
     function(cb) {
             this.timeout(6000);
             request.del("http://95.217.210.206/api/v1/internat/localEvent/34", {
@@ -353,6 +383,8 @@ it('should be possible to get trainers ', function(cb) {
             });
         });
 
+
+        
 //===========================================STOP DELETE REQUESTS=================================================
 
 });
