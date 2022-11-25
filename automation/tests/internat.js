@@ -224,11 +224,138 @@ describe('Internat - automation testing', function(cb) {
         });
     });
 
+      //Хотим вытащить все международных турниров с базы данных через апи
+    it('should be possible to get international events ', function(cb) {
+        this.timeout(6000);
+        console.log("Starting...");
+        // console.log(ENDPOINT_API_SPORTSMEN)
+        request.get("http://95.217.210.206/api/v1/internat/getAllEvents", {
+            json: true,
+            strictSSL: config.api.checkCertificate,
+            headers: {
+                'X-CSession-Token': token
+            }
+        }, function(err, res, body) {
+            try {
+                console.log(body);
+                // console.log(err)
+                // console.log(res)
+                var testCase = "should be possible to get new international event - GET request: ";
+                should.not.exist(err);
+                should.exist(body);
+                res.statusCode.should.equal(200);
+                switch (res.statusCode == 200) {
+                    case true:
+                        log.info("Passed: " + testCase);
+                        break;
+                }
+            } catch (err) {
+                log.error("Failed: " + testCase + '->' + err);
+                should.throw(err);
+            }
+            cb();
+        });
+    });
 
+
+//Хотим вытащить все данныз спортсменов ч базы данных через апи
+it('should be possible to get sportsmen ', function(cb) {
+    this.timeout(6000);
+    console.log("Starting...");
+    //console.log(ENDPOINT_API_SPORTSMEN)
+    request.get("http://95.217.210.206/api/v1/internat/allSportsmen",{
+        json: true,
+        strictSSL: config.api.checkCertificate,
+        headers: {
+            'X-CSession-Token': token
+        }
+    },function(err,res,body) {
+        try {
+            console.log(body);
+            var testCase = "should be possible to get list of sportsman - GET request: ";
+            should.not.exist(err)
+            should.exist(body);
+            res.statusCode.should.equal(200);
+            switch (res.statusCode == 200) {
+                case true:
+                log.info("Passed:" + testCase);
+                break;
+
+            }
+        }catch (err) {
+            log.error("Failed: " + testCase + '->' + err);
+            should.throw(err);
+        }
+        cb();
+    });
+});
+
+//Хотим вытащить все данныз тренеров  С базы данных через апи 
+it('should be possible to get trainers ', function(cb) {
+    this.timeout(6000);
+    console.log("Starting...");
+    // console.log(ENDPOINT_API_TRAINERS)
+    request.get("http://95.217.210.206/api/v1/internat/trainers", {
+        json: true,
+        strictSSL: config.api.checkCertificate,
+        headers: {
+            'X-CSession-Token': token
+        }
+    }, function(err,res,body) {
+        try {
+            console.log(body);
+            // console.log(err)
+            // console.log(res)
+            var testCase = "should be possible to get new trainer - GET request: ";
+            should.not.exist(err);
+            should.exist(body);
+            res.statusCode.should.equal(200);
+            switch (res.statusCode == 200) {
+                case true:
+                log.info("Passed:" + testCase);
+                break;
+            }
+        }catch (err) {
+            log.error("Failed: " + testCase + '->' + err);
+            should.throw(err);
+        }
+        cb();
+    });
+});
 
 //===========================================STOP GET REQUESTS=================================================
 
+//===========================================START DELETE REQUESTS=================================================
+ it('should be possible to delete local event: ', 
+    function(cb) {
+            this.timeout(6000);
+            request.del("http://95.217.210.206/api/v1/internat/localEvent/34", {
+                json: true,
+                strictSSL: config.api.checkCertificate,
+                headers: {
+                    'X-CSession': token
+                }
+            }, function(err, res, body) {
+                try {
+                    console.log(body);
+                    var testCase = "should be possible to delete local event: ";
+                    res.statusCode.should.equal(200);
+                    switch (res.statusCode == 200) {
+                        case true:
+                            log.info("Passed: " + testCase);
+                            break;
+                    }
+                } catch (err) {
+                    log.error("Failed: " + testCase + ' ->' + err);
+                    should.throw(err);
+                }
+                cb();
+            });
+        });
 
+//===========================================STOP DELETE REQUESTS=================================================
+
+});
     /*           
 
     const SUCCESS = {
@@ -254,71 +381,5 @@ describe('Internat - automation testing', function(cb) {
         success: false,
         message: 'Unexpected error'
     };
-    var token = null;
+    var token = null; */
 
-    it('return data for the given accesspoint (post data) - check attributes and parameters of the spot:  ' + config.prov.hotspotId, function(cb) {
-                this.timeout(6000);
-                request.get(ENDPOINT_API_ACCESSPOINTS_BY_SPOT_ID + "UE-9-30", {
-                    json: true,
-                    strictSSL: config.api.checkCertificate,
-                    headers: {
-                        'X-CSession': token
-                    }
-                }, function(err, res, body) {
-                    try {
-                        console.log(body);
-                        var testCase = "return data for the given accesspoint (post data) - check attributes and parameters of the spot:  " + config.prov.hotspotId;
-                        //chack the parameters
-                        body.spotId.should.equal(config.prov.hotspotId);
-                        res.statusCode.should.equal(200);
-                        switch (res.statusCode == 200 &&
-                            body.spotId == conf.data.ap1.spotId
-
-                        ) {
-                            case true:
-                                log.info("Passed: " + testCase);
-                                break;
-                        }
-                    } catch (err) {
-                        log.error("Failed: " + testCase + ' ->' + err);
-                        should.throw(err);
-                    }
-                    cb();
-                });
-            });
-
-
-
-                    it('should be possible to delete spot: ' + config.prov.hotspotId, function(cb) {
-            this.timeout(6000);
-            request.del(ENDPOINT_API_ACCESSPOINTS_BY_SPOT_ID_DELETE + config.prov.hotspotId, {
-                json: true,
-                strictSSL: config.api.checkCertificate,
-                headers: {
-                    'X-CSession': token
-                }
-            }, function(err, res, body) {
-                try {
-                    //console.log(body);
-                    var testCase = "should be possible to delete spot: " + config.prov.hotspotId;
-                    res.statusCode.should.equal(200);
-                    switch (res.statusCode == 200) {
-                        case true:
-                            log.info("Passed: " + testCase);
-                            break;
-                    }
-                } catch (err) {
-                    log.error("Failed: " + testCase + ' ->' + err);
-                    should.throw(err);
-                }
-                cb();
-            });
-        });
-
-    */
-
-
-
-
-
-});
