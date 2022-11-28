@@ -26,6 +26,14 @@
             "surname" : "mitaky",
             "phone": " +380662605380",
             "category": "honored trainer of Ukraine, national judje"
+        },
+        "training": {
+            "task": "мешки",
+            "day": "понедельник",
+            "morning": 1,
+            "evening": 1,
+            "description": "кросс, пары, мешки"
+
         }
     },
     "api": {
