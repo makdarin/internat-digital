@@ -31,7 +31,46 @@ var token = null;
 describe('Internat - automation testing', function(cb) {
 
 //===========================================STRART POST REQUESTS==================================================
+//Хотим протестировать добавление новой тренеровки в базу данных через апи
+ it('should be possible to insert new training ' + config.internat.training.day, function(cb) {
+    this.timeout(6000);
+    console.log("Starting with POST request...");
+request.post("http://95.217.210.206/api/v1/internat/traning", {
+    json: true,
+    strictSSL: config.api.checkCertificate,
+    headers: {
+        'X-CSession-Token': token
+    },
+    body: {
+        task: config.internat.training.task,
+        day: config.internat.training.day,
+        morning: config.internat.training.morning,
+        evening: config.internat.training.evening,
+        description: config.internat.training.description
+    }
+}, function(err,res,body) {
+    try {
+        console.log(body);
+        // console.log(err)
+        // console.log(res)
+        var testCase = "should be possible to insert new trainig - POST request: " + config.internat.training.day;
+        should.not.exist(err);
+        should.exist(body);
+        res.statusCode.should.equal(200);
+        switch (res.statusCode == 200) {
+            case true:
+                log.info("Passed: " + testCase);
+                break
+        }
+    } catch (err) {
+        log.error("Failed: " + testCase + '->' + err);
+        should.throw(err);
+    }
+    cb();
+});
+ });
 
+ 
 
     //Хотим протестировать добавление нового спортсмена в базу данных через апи
     it('should be possible to insert new sportsmen ' + config.internat.sportsmen.name, function(cb) {
