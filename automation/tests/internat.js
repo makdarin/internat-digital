@@ -35,7 +35,7 @@ describe('Internat - automation testing', function(cb) {
  it('should be possible to insert new training ' + config.internat.training.day, function(cb) {
     this.timeout(6000);
     console.log("Starting with POST request...");
-request.post("http://95.217.210.206/api/v1/internat/traning", {
+request.post("http://95.217.210.206/api/v1/internat/training", {
     json: true,
     strictSSL: config.api.checkCertificate,
     headers: {
@@ -70,7 +70,6 @@ request.post("http://95.217.210.206/api/v1/internat/traning", {
 });
  });
 
- 
 
     //Хотим протестировать добавление нового спортсмена в базу данных через апи
     it('should be possible to insert new sportsmen ' + config.internat.sportsmen.name, function(cb) {
