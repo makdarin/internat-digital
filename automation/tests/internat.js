@@ -275,7 +275,7 @@ request.post("http://95.217.210.206/api/v1/internat/training", {
             }
         }, function(err, res, body) {
             try {
-                console.log.apply(body);
+                console.log(body);
                 // console.log(err)
                 // console.log(res)
                 var testCase = "should be possible to get allTrainigs - GET request: ";
