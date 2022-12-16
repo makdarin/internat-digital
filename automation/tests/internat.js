@@ -110,6 +110,45 @@ it('should be possible to insert new training ' + config.internat.training.day, 
 
 });
 
+//Хотим протестировать добавление нового спортсмена в базу данных через апи
+it('should be possible to insert new sportsmen ' + config.internat.sportsmen.name, function(cb) {
+   this.timeout(6000);
+   console.log("Starting with POST request...");
+   request.post("http://95.217.210.206/api/v1/internat/sportsman", {
+    json: true,
+    strictSSL: config.api.checkCertificate,
+    headers: {
+        'X-CSession-Token': token
+    },
+    body: {
+        name: config.internat.sportsmen.name,
+        surname: config.internat.sportsmen.surname,
+        phone: config.internat.sportsmen.phone
+    }
+   }, function(err, res, body) {
+    try {
+        console.log(body);
+        // console.log(err)
+        // console.log(res)
+        var testCase = "should be possible to insert new sportsmen - POST request: " + config.internat.sportsmen.name;
+        should.not.exist(err);
+        should.exist(body);
+        res.statusCode.should.equal(200);
+        switch (res.statusCode == 200) {
+            case true:
+                log.info("Passed: " + testCase);
+                break;
+
+        }
+    } catch (err) {
+        log.error("Failed: " + testCase + '->' + err);
+        should.throw(err);
+    }
+    cb();
+   });
+});
+
+
     //Хотим протестировать добавление нового спортсмена в базу данных через апи
     it('should be possible to insert new sportsmen ' + config.internat.sportsmen.name, function(cb) {
         this.timeout(6000);
