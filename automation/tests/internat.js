@@ -21,6 +21,7 @@ chai.Assertion.addProperty('json', function() {
     JSON.parse(this._obj);
 });
 
+
 // Internat API Calls
 var ENDPOINT_API_SPORTSMEN = getAPIUrl('/sportsman');
 var ENDPOINT_API_INTERNATIONAL_EVENT = getAPIUrl('intEvent')
@@ -69,7 +70,45 @@ request.post("http://95.217.210.206/api/v1/internat/training", {
     cb();
 });
  });
+//Хотим протестировать добавление новой тренеровки в базу данных через апи
+it('should be possible to insert new training ' + config.internat.training.day, function(cb) {
+    this.timeout(6000);
+    console.log("Starting with POST request...");
+    request.post("htttp://95.217.210.206/api/v1/internat/training", {
+        json: true,
+        strictSSL: config.api.checkCertificate,
+        headers: {
+            'X-CSession-Token': token
+        },
+        body: {
+            task: config.internat.training.task,
+            day: config.internat.training.day,
+            morning: config.internat.training.morning,
+            evening: config.internat.training.evening,
+            description: config.internat.training.description
+        }
+    }, function(err, res, body) {
+        try {
+            console.log(body);
+            // console.log(err)
+            // console.log(res)
+            var testCase = " should be possible to insert new training - POST request: " + config.internat.training.day;
+            should.not.exist(err);
+            should.exist(body);
+            res.statusCode.should.equal(200);
+            switch (res.statusCode == 200) {
+                case true:
+                    log.info("Passed: " + testCase);
+                    break;
+            }
+        } catch (err) {
+            log.error("Failed: " + testCase + '->' + err);
+            should.throw(err);
+        }
+        cb();
+    });
 
+});
 
     //Хотим протестировать добавление нового спортсмена в базу данных через апи
     it('should be possible to insert new sportsmen ' + config.internat.sportsmen.name, function(cb) {
