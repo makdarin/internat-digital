@@ -187,6 +187,45 @@ it('should be possible to insert new sportsmen ' + config.internat.sportsmen.nam
         });
     });
 
+    // Хотим протестировать добавление нового международного турнира в базу данных через апи
+    it('should be possible to insert new international event ' + config.internat.int_event.name_event, function(cb) {
+        this.timeout(6000);
+        // console.log(ENPOINT_API_SPORTSMEN)
+        request.post("http://95.217.210.206/api/v1/internat/intEvent", {
+            json: true,
+            strictSSL: config.api.checkCertificate,
+            headers: {
+                'X-CSession-Token': token
+            },
+            body: {
+                year: config.internat.int_event.year,
+                name_event: config.internat.int_event.name_event,
+                sportsman: config.internat.int_event.sportsman,
+                weight: config.internat.int_event.weight,
+                result: config.internat.int_event.result
+            }
+        }, function(err, res, body) {
+            try {
+                console.log(body);
+                // console.log(err)
+                // console.log(res)
+                var testCase = "should be possible to insert new international event - POST request: " + config.internat.int_event.name_event;
+                should.not.exist(err);
+                should.exist(body);
+                res.statusCode.should.equal(200);
+                switch (res.statusCode == 200) {
+                    case true:
+                        log.info("Passed: " + testCase);
+                        break;
+                }
+            } catch (err) {
+                log.err("Failed: " + testCase + '->' + err);
+                should.throw(err);
+            }
+            cb();
+        });
+    });
+    
     //Хотим протестировать добавление нового международного турнира в базу данных через апи
     it('should be possible to insert new international event ' + config.internat.int_event.name_event, function(cb) {
         this.timeout(6000);
