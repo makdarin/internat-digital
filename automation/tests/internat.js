@@ -266,6 +266,46 @@ it('should be possible to insert new sportsmen ' + config.internat.sportsmen.nam
         });
     });
 
+
+//Хотим протестировать добавление нового тренера в базу данных через апи
+it('should be possible to insert new trainer' + config.internat.trainers.name, function(cb) {
+    this.timeout(6000);
+    // conole.log(ENPOINT_API_TRAINERS)
+    request.post("http://95.217.206/api/v1/internat/trainer", {
+        json: true,
+        strictSSL: config.api.checkCertificate,
+        headers: {
+            'X-CSession-Token': token
+        },
+        body: {
+            name: config.internat.trainers.name,
+            surname: config.internat.trainers.surname,
+            phone: config.internat.trainers.phone,
+            category: config.internat.trainers.category
+        }
+
+    }, function(err, res, body) {
+        try {
+            console.log(body);
+            // console.log(err)
+            // console.log(res)
+            var testCase = "should possible to insert new trainer - POST request: " + config.internat.trainers.trainer;
+            should.not.exist(err);
+            should.exist(body);
+            res.statusCode.should.equal(200);
+            switch (res.statusCode == 200) {
+                case true:
+                    log.info("Passed: " + testCase);
+                    break;
+            }
+            
+            } catch (err) {
+                log.error("Failed: " + testCase + '->' + err);
+            }
+            cb();
+        });
+    }
+}
     //Хотим протестировать добавление нового тренерав базу данныз через апи
     it('shoud be possible to insert new trainer' + config.internat.trainers.name, function(cb) {
         this.timeout(6000);
