@@ -342,6 +342,45 @@ it('should be possible to insert new trainer' + config.internat.trainers.name, f
             cb();
         });
     });
+    //Хотим протестировать добавление нового местного турнира в базу данных через апи
+    it('should be possible to insert new local enent ' + config.internat.local_event, function(cb) {
+        this.timeout(6000);
+        // console.log(ENDPOIT_API_SPORTSMEN)
+        request.post("http://95.217.210.206/api/v1/internat/localEvent", {
+            json: true,
+            strictSSL: config.api.checkCertificate,
+            headers: {
+                'X-CSession-Token': token
+            },
+            body: {
+                year: config.internat.local_event.year,
+                event: config.internat.local_event.event,
+                city: config.internat.local_event.city,
+                sportsman: config.internat.local_event.sportsman,
+                weight: config.internat.local_event.weight,
+                result: config.internat.int_event.result
+            }
+        }, function(er, res, body) {
+            try {
+                console.log(body);
+                // console.log(err)
+                // console.log(res)
+                var testCase = "should be possible to insert new local event - POST request: " + config.internat.local_event.event;
+                should.not.exist(err);
+                should.exist(body);
+                res.statusCode.should.equal(200);
+                switch (res.statusCode == 200) {
+                    case true:
+                        log.info("Passed: " + testCase);
+                        break;
+                }
+            } catch (err) {
+                log.error("Failed: " + '->' + err);
+                should.throw(err);
+            }
+            cb();
+        });
+    });
 
     //Хотим протестировать добавление нового местного турнира в базу данных через апи
     it('should be possible to insert new local event ' + config.internat.local_event.event, function(cb) {
