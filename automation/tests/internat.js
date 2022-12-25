@@ -426,7 +426,36 @@ it('should be possible to insert new trainer' + config.internat.trainers.name, f
 
 //===========================================STRART GET REQUESTS==================================================
     console.log("Starting with GET requests...");
-
+//Хотим вытащить все местные турниры с базы данных через апи
+it('should be possible to get local event ', function(cb) {
+    this.timeout(6000);
+    request.get("http://95.217.210.206/api/v1/internat/lacalEvent", {
+        json: true,
+        strictSSL: config.api.checkCertificate,
+        headers: {
+            'X-CSession-Token': token
+        }
+    }, function(err, res, body) {
+        try {
+            console.log(body);
+            // console.log(err)
+            // console.log(res)
+            var testCase = "should be possible to get new local event - GET request: ";
+            should.not.exist(err);
+            should.exist(body);
+            res.statusCode.should.equal(200);
+            switch (res.statusCode == 200) {
+                case true:
+                    log.info("Passed: " + testCase);
+                    break;
+            }
+        } catch (err) {
+            log.error("Failed:" + testCase + '->' + err);
+            should.throw(err);
+        }
+        cb();
+    });
+}); 
     //Хотим вытащить все местные турниры с базы данных через апи
     it('should be possible to get local events ', function(cb) {
         this.timeout(6000);
