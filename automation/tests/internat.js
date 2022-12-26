@@ -486,7 +486,38 @@ it('should be possible to get local event ', function(cb) {
             cb();
         });
     });
-
+//Хотим вытащить все тренеровки с базы данных через апи
+it('should be possible to get training ', function(cb) {
+    this.timeout(6000);
+    console.log("Starting..");
+    // console.log(ENPOINT_API_TREINIG)
+    request.get("http://95.217.210.206/api/v1/intrenat/allTraining", {
+        json: true,
+        strictSSL: config.api.checkCertificate,
+        headers: {
+            'X-CSession-Token': token
+        }
+    }, function(err, res, body) {
+        try {
+            console.log(body);
+            // console.log(err)
+            // console.log(res)
+            var testCase = "should be possible to get allTraining - GET request: ";
+            should.not.exist(err);
+            should.exist(body);
+            res.statusCode.should.equal(200);
+            switch (res.statusCode == 200) {
+                case true:
+                    log.info("Passed: " + testCase);
+                    break
+            }
+        } catch (err) {
+            log.error("Failed: " + testCase + '->' + err);
+            should.throw(err);
+        }
+        cb();
+    });
+});
     //Хотим вытащить все тренеровки с базы данных через апи
     it('should be possible to get training ', function(cb) {
         this.timeout(6000);
