@@ -551,6 +551,39 @@ it('should be possible to get training ', function(cb) {
         });
     });
 
+    //Хотим вытащить все международные турниры с базы данных через апи
+    it('should be possible to get international events ', function(cb) {
+        this.timeout(6000);
+        console.log("Starting...");
+        // console.log(ENPOINT_API_SPORTSMEN)
+        request.get("http://95.217.210.206/api/v1/internat/getAllEvent", {
+            json: true,
+            strictSSL: config.api.checkCertificate,
+            headers: {
+                'X-CSession-Token': token
+            }
+        }, function(err, res, body) {
+            try {
+                console.log(body);
+                // console.log(err)
+                // console.log(res)
+                var testCase = "should be possible to get new international event - GET request: ";
+                should.not.exist(err);
+                should.exist(body);
+                res.statusCode.should.equal(200);
+                switch (res.statusCode == 200) {
+                    case true:
+                        log.info("Passed: " + testCase);
+                        break;
+                }
+            } catch (err) {
+                log.error("Failed: " + '->' + err);
+                should.throw(err);
+            }
+            cb();
+        });
+    });
+    
 
       //Хотим вытащить все международных турниров с базы данных через апи
     it('should be possible to get international events ', function(cb) {
