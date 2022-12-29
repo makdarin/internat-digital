@@ -618,6 +618,37 @@ it('should be possible to get training ', function(cb) {
         });
     });
 
+ //Хотим вытащить все данные спортсменов из базы данных через апи
+ it('should be possible to get sportsmen ', function(cb) {
+    this.timeout(6000);
+    console.log("Starting...");
+    // console.log(ENDPOINT_API_SPORTSMEN)
+    request.get("http://95.217.210.206/api/v1/internat/allSportsmen", {
+        json: true,
+        strictSSL: config.api.checkCertificate,
+        headers: {
+            'X-CSession-Token': token
+        }
+    },function(err, res, body) {
+        try {
+            console.log.apply(body);
+            var testCase = "should be possible to get list of sportsman - GET requst: ";
+            should.not.exist(err);
+            should.exist(body);
+            res.statusCode.should.equal(200);
+            switch (res.statusCode == 200) {
+                case true:
+                    log.info("Pased:" + testCase);
+                    break;
+            }
+        }catch (err) {
+            log.error("Failed:" + testCase + '->' + err);
+            should.throw(err);
+        }
+        cb();
+    });
+ });    
+
 
 //Хотим вытащить все данныз спортсменов ч базы данных через апи
 it('should be possible to get sportsmen ', function(cb) {
@@ -634,7 +665,7 @@ it('should be possible to get sportsmen ', function(cb) {
         try {
             console.log(body);
             var testCase = "should be possible to get list of sportsman - GET request: ";
-            should.not.exist(err)
+            should.not.exist(err);
             should.exist(body);
             res.statusCode.should.equal(200);
             switch (res.statusCode == 200) {
