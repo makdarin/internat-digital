@@ -828,6 +828,33 @@ it('should be possible to delete international event:',
                         break
                 }
             } catch (err) {
+                log.error("Failed: " + testCase + '->' + err );
+                should.throw(err);
+            }
+            cb();
+        });
+     });
+
+     it('should be possible to delete training:',
+     function(cb) {
+        this.timeout(600);
+        request.del("http://95.217.210.206/api/v1/internat/training/34", {
+            json: true,
+            strictSSL: config.api.checkCertificate,
+            headers: {
+                'X-CSession': token
+            }
+        }, function(err,res,body) {
+            try {
+                console.log(body);
+                var testCase = "should be possible to delete training: ";
+                res.statusCode.should.equal(200);
+                switch (res.statusCode == 200) {
+                    case true:
+                        log.info("Passed: " + testCase);
+                        break
+                }
+            } catch (err) {
                 log.error("Failed: " + testCase + '->' + err);
                 should.throw(err);
             }
