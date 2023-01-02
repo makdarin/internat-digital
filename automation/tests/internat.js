@@ -862,7 +862,33 @@ it('should be possible to delete international event:',
         });
      });
 
-     
+    it('should be possible to delete trainer: ',
+    function(cb) {
+        this.timeout(6000);
+        request.del("http://95.217.210.206/api/v1/internat/trainers/34", {
+            json: true,
+            strictSSL: config.api.checkCertificate,
+            headers: {
+                'X-CSession': token
+            }
+        }, function(er,re,body) {
+            try {
+                console.log(body);
+                var testCase = "should be possible to delete trainer: ";
+                res.statusCode.should.equal(200);
+                switch (res.statusCode == 200) {
+                    case true:
+                        log.info("Passed: " + testCase);
+                        break;
+                }
+            } catch (err) {
+                log.error("Failed: " + testCase + '->' + err);
+                should.throw(err);
+            }
+            cb();
+        });
+    });
+    
     it('should be possible to delete trainer: ',
     function(cb) {
         this.timeout(6000);
