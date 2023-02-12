@@ -1,1 +1,25 @@
-postman result
+1----------------------------------------------Automation testing--------------------------------
+1. Start Cygwin
+2. go to path
+	cd c:/
+	cd Users/nwuser/Documents/Projects/testrunner
+3. start command:
+	gruntcc
+	
+4. Open Visual Studio Code
+5. Open path (testrunner):
+ C:\Users\nwuser\Documents\Projects
+6.Open Postman
+	 - check the added Info via API 
+
+	 
+	 
+	 
+	 
+	 
+	 
+----------------------------------------Linux work------------------------------
+c
+ls
+cd c:/
+U
